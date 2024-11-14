@@ -172,6 +172,7 @@
     <ClInclude Include="VBO.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="brick.png" />
     <Image Include="images.png" />
     <Image Include="redAmongUs.png" />
   </ItemGroup>
