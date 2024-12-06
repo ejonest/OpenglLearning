@@ -27,28 +27,11 @@ const unsigned int height = 800;
 // Vertices coordinates
 GLfloat vertices[] =
 { //     COORDINATES       /        COLORS         /  TexCoord   /       Normals       /
-	-0.5f,  0.0f,   0.5f,     0.83f, 0.70f, 0.44f,	 0.0f, 0.0f,    0.0f, -1.0f,  0.0f, // Bottom side
-	-0.5f,  0.0f,  -0.5f,     0.83f, 0.70f, 0.44f,	 0.0f, 5.0f,    0.0f, -1.0f,  0.0f, // Bottom side
-	 0.5f,  0.0f,  -0.5f,     0.83f, 0.70f, 0.44f,	 5.0f, 5.0f,    0.0f, -1.0f,  0.0f, // Bottom side
-	 0.5f,  0.0f,   0.5f,     0.83f, 0.70f, 0.44f,	 5.0f, 0.0f,    0.0f, -1.0f,  0.0f, // Bottom side
-
-	-0.5f,  0.0f,   0.5f,     0.83f, 0.70f, 0.44f,	 0.0f, 0.0f,   -0.8f,  0.5f,  0.0f, // Left side
-	-0.5f,  0.0f,  -0.5f,     0.83f, 0.70f, 0.44f,	 5.0f, 0.0f,   -0.8f,  0.5f,  0.0f, // Left side
-	 0.0f,  0.8f,   0.0f,     0.92f, 0.86f, 0.76f,	 2.5f, 5.0f,   -0.8f,  0.5f,  0.0f, // Left side
-
-	-0.5f,  0.0f,  -0.5f,     0.83f, 0.70f, 0.44f,	 5.0f, 0.0f,    0.0f,  0.5f, -0.8f, // Non-facing side
-	 0.5f,  0.0f,  -0.5f,     0.83f, 0.70f, 0.44f,	 0.0f, 0.0f,    0.0f,  0.5f, -0.8f, // Non-facing side
-	 0.0f,  0.8f,   0.0f,     0.92f, 0.86f, 0.76f,	 2.5f, 5.0f,    0.0f,  0.5f, -0.8f, // Non-facing side
-
-	 0.5f,  0.0f,  -0.5f,     0.83f, 0.70f, 0.44f,	 0.0f, 0.0f,    0.8f,  0.5f,  0.0f, // Right side
-	 0.5f,  0.0f,   0.5f,     0.83f, 0.70f, 0.44f,	 5.0f, 0.0f,    0.8f,  0.5f,  0.0f, // Right side
-	 0.0f,  0.8f,   0.0f,     0.92f, 0.86f, 0.76f,	 2.5f, 5.0f,    0.8f,  0.5f,  0.0f, // Right side
-
-	 0.5f,  0.0f,   0.5f,     0.83f, 0.70f, 0.44f,	 5.0f, 0.0f,    0.0f,  0.5f,  0.8f, // Facing side
-	-0.5f,  0.0f,   0.5f,     0.83f, 0.70f, 0.44f,	 0.0f, 0.0f,    0.0f,  0.5f,  0.8f, // Facing side
-	 0.0f,  0.8f,   0.0f,     0.92f, 0.86f, 0.76f,	 2.5f, 5.0f,    0.0f,  0.5f,  0.8f  // Facing side
+	-1.0f,  0.0f,   1.0f,      0.0f,  0.0f,  0.0f,	 0.0f, 0.0f,    0.0f,  1.0f,  0.0f, // Now a flat plane
+	-1.0f,  0.0f,  -1.0f,      0.0f,  0.0f,  0.0f,	 0.0f, 1.0f,    0.0f,  1.0f,  0.0f,
+	 1.0f,  0.0f,  -1.0f,      0.0f,  0.0f,  0.0f,	 1.0f, 1.0f,    0.0f,  1.0f,  0.0f,
+	 1.0f,  0.0f,   1.0f,      0.0f,  0.0f,  0.0f,	 1.0f, 0.0f,    0.0f,  1.0f,  0.0f
 };
-
 // Indices for vertices order
 GLuint indices[] =
 {
@@ -194,8 +177,10 @@ int main()
 	//popCat.texUnit(shaderProgram, "tex0", 0);
 
 	// Original code from the tutorial
-	Texture popCat("brick.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
-	popCat.texUnit(shaderProgram, "tex0", 0);
+	Texture planksTex("planks.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE);
+	planksTex.texUnit(shaderProgram, "tex0", 0);
+	Texture planksSpec("planksSpec.png", GL_TEXTURE_2D, 1, GL_RED, GL_UNSIGNED_BYTE);
+	planksSpec.texUnit(shaderProgram, "tex1", 1);
 
 	glEnable(GL_DEPTH_TEST);
 	// Create the camera object
@@ -218,7 +203,8 @@ int main()
 		camera.Matrix(shaderProgram, "camMatrix");
 		lightVAO.Bind();
 		// Binds texture so that is appears in rendering
-		popCat.Bind();
+		planksTex.Bind();
+		planksSpec.Bind();
 		// Bind the VAO so OpenGL knows to use it
 		VAO1.Bind();
 		// Draw primitives, number of indices, datatype of indices, index of indices
@@ -241,7 +227,7 @@ int main()
 	VAO1.Delete();
 	VBO1.Delete();
 	EBO1.Delete();
-	popCat.Delete();
+	planksTex.Delete();
 	shaderProgram.Delete();
 	// Delete window before ending the program
 	glfwDestroyWindow(window);

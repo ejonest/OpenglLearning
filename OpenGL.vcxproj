@@ -178,6 +178,8 @@
   <ItemGroup>
     <Image Include="brick.png" />
     <Image Include="images.png" />
+    <Image Include="planks.png" />
+    <Image Include="planksSpec.png" />
     <Image Include="redAmongUs.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
